@@ -1,0 +1,125 @@
+package ${config.package}.entity;
+
+<#if (types?seq_contains("Date"))>import java.util.Date;</#if>
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+<#if (types?seq_contains("Date"))>import org.springframework.format.annotation.DateTimeFormat;</#if>
+import org.yessoft.base.annotation.EntityInfo;
+import org.yessoft.base.annotation.FieldInfo;
+import org.yessoft.base.core.Base;
+<#if (types?seq_contains("Date"))>import org.yessoft.base.util.YESUtil;</#if>
+
+<#if (types?seq_contains("Date"))>import com.fasterxml.jackson.annotation.JsonFormat;</#if>
+
+/**
+ * 
+ * Entity for ${config.entity.title}
+ *
+ */
+@Entity
+@EntityInfo("${config.entity.title}")
+@Table(name = "${config.entity.table}", indexes = { 
+			<#list indexes as index>@Index(name = "${index}", columnList = "${index}"),</#list>
+			@Index(name = "created", columnList = "created"), 
+			@Index(name = "updated", columnList = "updated")})
+@DynamicUpdate
+public class ${config.name} extends Base {
+
+	private static final long serialVersionUID = 1L;
+
+	<#list config.entity.properties as property>
+	@FieldInfo("${property.title}")
+	<#if (property.type="String" && property.format="String")>
+	@Column(name = "${property.field}", length = ${property.length}<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = "${property.default}";
+	</#if>
+	<#if (property.type="String" && property.format="Text")>
+	@Column(name = "${property.field}", columnDefinition = "TEXT"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = "${property.default}";
+	</#if>
+	<#if (property.type="Integer")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = ${property.default};
+	</#if>
+	<#if (property.type="Long")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = ${property.default}l;
+	</#if>
+	<#if (property.type="Double")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = ${property.default};
+	</#if>
+	<#if (property.type="Boolean")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	private ${property.type} ${property.name} = ${property.default?c};
+	</#if>
+	<#if (property.type="Date" && property.format="DateTime")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "${property.timezone}")
+	private ${property.type} ${property.name}<#if (property.default!="")> = YESUtil.getDateTimeByString("${property.default}")</#if>;
+	</#if>
+	<#if (property.type="Date" && property.format="Time")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	@DateTimeFormat(pattern = "HH-mm-ss")
+	@JsonFormat(pattern = "HH:mm:ss", timezone = "${property.timezone}")
+	private ${property.type} ${property.name}<#if (property.default!="")> = YESUtil.getTimeByString("${property.default}")</#if>;
+	</#if>
+	<#if (property.type="Date" && property.format="Date")>
+	@Column(name = "${property.field}"<#if (!property.nullable)>, nullable = ${property.nullable?c}</#if>)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "${property.timezone}")
+	private ${property.type} ${property.name}<#if (property.default!="")> = YESUtil.getDateByString("${property.default}")</#if>;
+	</#if>
+		
+	</#list>
+	/**
+	 *
+	 * 构造函数
+	 *
+	 */
+	public ${config.name}() {
+		super();
+	}
+	
+	/**
+	 *
+	 * 构造函数
+	 *
+	 <#list config.entity.properties as property>
+	 * @param ${property.name}
+	 *			${property.title}
+	 * 
+	 </#list>
+	 */
+	public ${config.name}(<#list config.entity.properties as property><#if property_index != 0>,</#if>${property.type} ${property.name}</#list>) {
+		super();
+		<#list config.entity.properties as property>
+		this.${property.name} = ${property.name};
+		</#list>
+	}
+
+	<#list config.entity.properties as property>
+	/**
+	 * @return ${property.name}
+	 *			${property.title}
+	 */
+	public ${property.type} get${property.name?cap_first}() {
+		return ${property.name};
+	}
+
+	/**
+	 * @param ${property.name}
+	 *			${property.title}
+	 */
+	public void set${property.name?cap_first}(${property.type} ${property.name}) {
+		this.${property.name} = ${property.name};
+	}
+	</#list>
+	
+}

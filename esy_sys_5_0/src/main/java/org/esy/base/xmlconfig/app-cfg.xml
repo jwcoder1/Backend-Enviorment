@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:*config.properties" />
+
+	<bean id="StatLogger" class="org.esy.base.log.StatLogger" />
+
+	<!-- jdbc -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="mysql" />
+		<property name="url" value="${jdbc.one.url}" />
+		<property name="username" value="${jdbc.one.user}" />
+		<property name="password" value="${jdbc.one.pwd}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.validationInterval}" />
+		<!-- 日志保存相隔时间以毫秒为单位 等0时不保存 -->
+		<property name="timeBetweenLogStatsMillis" value="${jdbc.timeBetweenLogStatsMillis}" />
+		<!-- <property name="maxIdle" value="${jdbc.maxIdle}"/> -->
+		<property name="minIdle" value="10" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="true" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="1800" />
+		<property name="logAbandoned" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="false" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters wall在前拦截检测的时间不在StatFilter统计的SQL执行时间内 -->
+		<property name="filters" value="stat,wall,slf4j" />
+		<property name="connectionProperties" value="druid.wall.logViolation=true" />
+		<property name="statLogger" ref="StatLogger" />
+	</bean>
+	
+	
+
+	<context:component-scan base-package="org.esy.*.service" />
+	<context:component-scan base-package="org.esy.*.notify" />
+	<context:component-scan base-package="org.esy.*.util" />
+	<context:component-scan base-package="org.esy.*.scheduled" />
+
+	<tx:annotation-driven proxy-target-class="true" />
+	<beans profile="jpa">
+		<bean id="entityManagerFactory"
+			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+			<property name="dataSource">
+				<ref bean="dataSource" />
+			</property>
+			<property name="jpaVendorAdapter">
+				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+					<property name="database" value="${jdbc.one.database}" />
+					<property name="showSql" value="${jdbc.showsql}" />
+				</bean>
+			</property>
+			<property name="jpaProperties">
+				<props>
+					<prop key="hibernate.dialect">
+						${jdbc.one.dialect}
+					</prop>
+					<prop key="hibernate.show_sql">${jdbc.showsql}</prop>
+					<prop key="hibernate.hbm2ddl.auto">${jdbc.hbm2ddl}</prop>
+					<prop key="hibernate.max_fetch_depth">5</prop>
+					<prop key="hibernate.jdbc.batch_size">1000</prop>
+					<prop key="hibernate.use_outer_join">true</prop>
+				</props>
+			</property>
+			<property name="packagesToScan" value="org.esy" />
+		</bean>
+	
+		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+			p:entityManagerFactory-ref="entityManagerFactory" />
+		<bean
+			class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+		<context:component-scan base-package="org.esy.*.dao" />
+	</beans>
+	
+	
+	
+</beans>
+
+
+
+

@@ -1,0 +1,154 @@
+package org.esy.base.controller;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.esy.base.core.Response;
+import org.esy.base.entity.Group;
+import org.esy.base.service.IGroupService;
+import org.esy.base.service.ILoginService;
+import org.esy.base.util.RestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ *
+ * Controller for 群组信息
+ * 
+ */
+@Controller
+@RequestMapping("/api/base/group")
+public class GroupController {
+
+	public static final List<String> AUTHORITY = Arrays.asList("base_group", "base_group2");
+
+	@Autowired
+	private ILoginService loginService;
+
+	@Autowired
+	private IGroupService groupService;
+
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Response> add(@RequestBody Group o, HttpServletRequest request) {
+		ResponseEntity<Response> result = RestUtils.checkAuthorization(request, loginService, AUTHORITY);
+		if (result.getBody().getError() != 0) {
+			return result;
+		}
+		Response resp;
+
+		try {
+			o.setUid(null);
+			resp = new Response(0, "Save success.", groupService.save(o, null, request));
+			return new ResponseEntity<Response>(resp, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = new Response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Save failed.", null);
+			return new ResponseEntity<Response>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@RequestMapping(value = "/{uid}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseEntity<Response> delet(@PathVariable String uid, HttpServletRequest request) {
+
+		ResponseEntity<Response> result = RestUtils.checkAuthorization(request, loginService, AUTHORITY);
+		if (result.getBody().getError() != 0) {
+			return result;
+		}
+
+		Response resp;
+
+		Group o = groupService.getByUid(uid);
+		if (o == null) {
+			resp = new Response(HttpStatus.GONE.value(), "Object not found", null);
+			return new ResponseEntity<Response>(resp, HttpStatus.GONE);
+		} else {
+			try {
+				groupService.delete(o);
+				resp = new Response(0, "Delete success.", null);
+				return new ResponseEntity<Response>(resp, HttpStatus.OK);
+			} catch (Exception e) {
+				resp = new Response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Object unable delete.", null);
+				return new ResponseEntity<Response>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+
+	@RequestMapping(value = "/{uid}", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<Response> update(@PathVariable String uid, @RequestBody Group o, HttpServletRequest request) {
+
+		ResponseEntity<Response> result = RestUtils.checkAuthorization(request, loginService, AUTHORITY);
+		if (result.getBody().getError() != 0) {
+			return result;
+		}
+
+		Response resp;
+
+		Group obj = groupService.getByUid(uid);
+		if (obj != null) {
+			if (obj.getUid().equals(o.getUid())) {
+				resp = new Response(0, "Update success.", groupService.save(o, obj, request));
+				return new ResponseEntity<Response>(resp, HttpStatus.OK);
+			} else {
+				resp = new Response(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Uid does not match.", null);
+				return new ResponseEntity<Response>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			resp = new Response(HttpStatus.GONE.value(), "Object not found.", null);
+			return new ResponseEntity<Response>(resp, HttpStatus.GONE);
+		}
+
+	}
+
+	@RequestMapping(value = "/{uid}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Response> get(@PathVariable String uid, HttpServletRequest request) {
+
+		ResponseEntity<Response> result = RestUtils.checkAuthorization(request, loginService, AUTHORITY);
+		if (result.getBody().getError() != 0) {
+			return result;
+		}
+
+		Response resp;
+
+		Group o = groupService.getByUid(uid);
+		if (o == null) {
+			resp = new Response(HttpStatus.GONE.value(), "Object not found", null);
+			return new ResponseEntity<Response>(resp, HttpStatus.GONE);
+		} else {
+			resp = new Response(0, "success", o);
+			return new ResponseEntity<Response>(resp, HttpStatus.OK);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Response> query(@RequestParam Map<String, Object> parm, HttpServletRequest request, HttpServletResponse response) {
+
+		ResponseEntity<Response> result = RestUtils.checkAuthorization(request, loginService, AUTHORITY);
+		if (result.getBody().getError() != 0) {
+			return result;
+		}
+
+		Response resp;
+
+		resp = new Response(0, "success.", groupService.query(parm));
+		return new ResponseEntity<Response>(resp, HttpStatus.OK);
+
+	}
+
+}

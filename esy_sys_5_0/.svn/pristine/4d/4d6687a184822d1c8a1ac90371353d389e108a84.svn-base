@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xsi:schemaLocation="http://www.springframework.org/schema/oxm
+         http://www.springframework.org/schema/oxm/spring-oxm.xsd
+         http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="viewResolvers">
+        	<list>
+        		 <!-- Default viewClass: JSTL view (JSP with html output) -->
+			    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			        <property name="prefix" value="/WEB-INF/yes/"/>
+			        <property name="suffix" value=".jsp"/>
+			        <property name="viewNames" value="cn/**,en/**,jsp/**"/>
+			        <property name="redirectHttp10Compatible" value="false" />
+			    </bean>
+			    <!-- Used here for 'xml' and 'atom' views  -->
+			    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+        	</list>
+        </property>
+    </bean>
+
+  
+    
+    
+    <!--ViewResolver 视图解析器 -->
+	<!--用于支持Servlet、JSP视图解析 -->
+	<bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration"
+		init-method="init">
+		<property name="root" value="/WEB-INF/templates" />
+	</bean>
+	<bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
+		<property name="config" ref="beetlConfig"/>
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="suffix" value=".html" />
+		<property name="order" value="0" />
+		<property name="viewNames" value="html/**"/>
+		<property name="redirectHttp10Compatible" value="false" />
+	</bean>
+	
+	
+	  <!-- Simple strategy: only path extension is taken into account -->
+    <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="true"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="defaultContentType" value="text/html"/>
+        
+        
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html" />
+                <entry key="xml" value="application/xml" />
+                <entry key="atom" value="application/atom+xml" />
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

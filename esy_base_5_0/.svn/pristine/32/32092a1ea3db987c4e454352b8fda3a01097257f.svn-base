@@ -1,0 +1,180 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"GroupMember",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_mgroupmember",
+		"title":"群组成员",
+		"defaultOrders":[
+			{
+				"field":"updated",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"type",
+				"orders":[
+					{
+						"field":"type",
+						"sort":"asc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "eid", 
+		        "field": "mgm_eid", 
+		        "title": "企业路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "gid", 
+		        "field": "mgm_gid", 
+		        "title": "群组编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "type", 
+		        "field": "mgm_type", 
+		        "title": "成员类型", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 1, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ], 
+		        "memo": "P:Person,T:Type,I:Identify,O:Organization,S:Post,N:Position,G:Group,A:Acount"
+		    }, 
+		    {
+		        "name": "opath", 
+		        "field": "mgm_opath", 
+		        "title": "成员组织路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "pid", 
+		        "field": "mgm_pid", 
+		        "title": "成员人员编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "positionId", 
+		        "field": "mgm_positionid", 
+		        "title": "成员职务编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 64, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "postId", 
+		        "field": "mgm_postid", 
+		        "title": "成员岗位编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "accountType", 
+		        "field": "mgm_accountType", 
+		        "title": "成员账号类型", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "account", 
+		        "field": "mgm_account", 
+		        "title": "成员账号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "groupId", 
+		        "field": "mgm_groupid", 
+		        "title": "成员群组编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/groupmember"
+	}
+}

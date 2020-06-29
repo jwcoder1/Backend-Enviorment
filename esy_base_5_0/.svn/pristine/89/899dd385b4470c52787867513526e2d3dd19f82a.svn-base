@@ -1,0 +1,267 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"CodeGenerationSample",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_codeGenerationSample",
+		"title":"自动代码生成范例",
+		"defaultOrders":[
+			{
+				"field":"integerValue",
+				"sort":"asc"
+			},{
+				"field":"doubleValue",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"stringValue",
+				"orders":[
+					{
+						"field":"stringValue",
+						"sort":"asc"
+					},{
+						"field":"textValue",
+						"sort":"desc"
+					}
+				]	
+			},{
+				"name":"textValue",
+				"orders":[
+					{
+						"field":"stringValue",
+						"sort":"desc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "stringValue", 
+		        "field": "tc_string", 
+		        "title": "字符型变量", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "Default String", 
+		        "conditions": [
+		            "eq,match"
+		        ], 
+		        "memo": "字符型变量范例"
+		    }, 
+		    {
+		        "name": "attachmentValue", 
+		        "field": "tc_attachment", 
+		        "title": "单附件变量", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "", 
+		        "memo": "单附件变量范例"
+		    }, 
+		    {
+		        "name": "attachmentsValue", 
+		        "field": "tc_attachments", 
+		        "title": "多附件变量", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "", 
+		        "memo": "多附件变量范例"
+		    }, 
+		    {
+		        "name": "pictureValue", 
+		        "field": "tc_picture", 
+		        "title": "图片变量", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq,match"
+		        ], 
+		        "memo": "图片变量范例"
+		    }, 
+		    {
+		        "name": "textValue", 
+		        "field": "tc_text", 
+		        "title": "备注型变量", 
+		        "type": "String", 
+		        "format": "Text", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "Default Text", 
+		        "memo": "备注型变量范例"
+		    }, 
+		    {
+		        "name": "integerValue", 
+		        "field": "tc_integer", 
+		        "title": "整型变量", 
+		        "type": "Integer", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": 20, 
+		        "conditions": [
+		            "gt,gte,lt,lte,eq"
+		        ], 
+		        "memo": "整型变量范例"
+		    }, 
+		    {
+		        "name": "longValue", 
+		        "field": "tc_long", 
+		        "title": "长整型变量", 
+		        "type": "Long", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "100l", 
+		        "memo": "长整型变量范例"
+		    }, 
+		    {
+		        "name": "doubleValue", 
+		        "field": "tc_double", 
+		        "title": "双精度型变量", 
+		        "type": "Double", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": 3.14, 
+		        "memo": "双精度型变量范例"
+		    }, 
+		    {
+		        "name": "booleanValue", 
+		        "field": "tc_boolean", 
+		        "title": "逻辑型变量", 
+		        "type": "Boolean", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": true, 
+		        "conditions": [
+		            "eq"
+		        ], 
+		        "memo": "逻辑型变量范例"
+		    }, 
+		    {
+		        "name": "datetimeValue", 
+		        "field": "tc_datetime", 
+		        "title": "日期时间型变量", 
+		        "type": "Date", 
+		        "format": "DateTime", 
+		        "timezone": "GMT+8", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "2015-10-08 09:00:00", 
+		        "conditions": [
+		            "gte,lte"
+		        ], 
+		        "memo": "日期时间型变量范例"
+		    }, 
+		    {
+		        "name": "timeValue", 
+		        "field": "tc_time", 
+		        "title": "时间型变量", 
+		        "type": "Date", 
+		        "format": "Time", 
+		        "timezone": "GMT+8", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "09:00:00", 
+		        "memo": "时间型变量范例"
+		    }, 
+		    {
+		        "name": "dateValue", 
+		        "field": "tc_date", 
+		        "title": "日期型变量", 
+		        "type": "Date", 
+		        "format": "Date", 
+		        "timezone": "GMT+8", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "2015-10-08", 
+		        "memo": "日期型变量范例"
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+			{
+				"name":"getEntityById",
+				"returnType":"CodeGenerationSample",
+				"returnText":"得到的实例",
+				"text":"根据编号取得实例",
+				"codeTemplate":"dao.impl.return.null.ftl",
+				"parameters":[
+					{
+						"type":"String",
+						"name":"id",
+						"text":"编号"
+					}
+				]
+			},{
+				"name":"getEntityByNumber",
+				"returnType":"int",
+				"returnText":"计算后的返回值",
+				"text":"根据两个参数返回值",
+				"codeTemplate":"dao.impl.return.0.ftl",
+				"parameters":[
+					{
+						"type":"int",
+						"name":"parm1",
+						"text":"参数1"
+					},{
+						"type":"int",
+						"name":"parm2",
+						"text":"参数2"
+					}
+				]
+			}
+		]
+	},
+	"service":{
+		"methods":[
+			{
+				"name":"getEntityById",
+				"returnType":"CodeGenerationSample",
+				"returnText":"得到的实例",
+				"text":"根据编号取得实例",
+				"codeTemplate":"dao.impl.return.null.ftl",
+				"transactional":true,
+				"parameters":[
+					{
+						"type":"String",
+						"name":"id",
+						"text":"编号"
+					}
+				]
+			},{
+				"name":"getEntityByNumber",
+				"returnType":"int",
+				"returnText":"计算后的返回值",
+				"text":"根据两个参数返回值",
+				"codeTemplate":"dao.impl.return.0.ftl",
+				"transactional":false,
+				"parameters":[
+					{
+						"type":"int",
+						"name":"parm1",
+						"text":"参数1"
+					},{
+						"type":"int",
+						"name":"parm2",
+						"text":"参数2"
+					}
+				]
+			}
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/codeGenerationSample"
+	}
+}

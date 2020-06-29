@@ -1,0 +1,49 @@
+package ${config.package}.dao.impl;
+
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+import org.apache.commons.lang.StringEscapeUtils;
+import ${config.package}.dao.I${config.name}Dao;
+import ${config.package}.entity.${config.name};
+
+import org.yessoft.base.util.UuidUtils;
+import org.yessoft.base.core.QueryResult;
+import org.yessoft.base.core.Condition;
+import org.yessoft.base.util.QueryUtils;
+import org.yessoft.base.util.YESUtil;
+
+/**
+ * 
+ * Dao implement for ${config.entity.title}
+ *
+ */
+@Repository
+public class ${config.name}DaoImpl implements I${config.name}Dao {
+
+	private EntityManager em;
+
+	public EntityManager getEm() {
+		return em;
+	}
+
+	@PersistenceContext
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
+	<#list config.dao.methods as method>
+	@Override
+	public ${method.returnType} ${method.name}(<#list method.parameters as parameter><#if parameter_index != 0>, </#if>${parameter.type} ${parameter.name}</#list>) { 
+		<#include "${method.codeTemplate}">
+	}
+	
+	</#list>
+	
+	<#include "dao.impl.base.ftl" > 
+
+}

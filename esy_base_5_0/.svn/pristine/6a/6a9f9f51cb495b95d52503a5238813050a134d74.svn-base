@@ -1,0 +1,173 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"Identity",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_midentity",
+		"title":"身份信息",
+		"defaultOrders":[
+			{
+				"field":"updated",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"pid",
+				"orders":[
+					{
+						"field":"pid",
+						"sort":"asc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "oid", 
+		        "field": "mi_oid", 
+		        "title": "组织编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "eid", 
+		        "field": "mi_eid", 
+		        "title": "企业路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "pid", 
+		        "field": "mi_pid", 
+		        "title": "人员编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "positionId", 
+		        "field": "mi_positionid", 
+		        "title": "职务编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 64, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "postId", 
+		        "field": "mi_postid", 
+		        "title": "岗位编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "enable", 
+		        "field": "mi_enable", 
+		        "title": "状态", 
+		        "type": "Boolean", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": true, 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "type", 
+		        "field": "mi_type", 
+		        "title": "类型", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 1, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": 1, 
+		        "conditions": [
+		            "eq"
+		        ], 
+		        "memo": "1.主要身份；2.兼职"
+		    }, 
+		    {
+		        "name": "seq", 
+		        "field": "mi_seq", 
+		        "title": "排序", 
+		        "type": "Integer", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": 99
+		    }, 
+		    {
+		        "name": "startDate", 
+		        "field": "mi_startdate", 
+		        "title": "开始日期", 
+		        "type": "Date", 
+		        "format": "Date", 
+		        "nullable": true, 
+		        "index": false, 
+		        "timezone":"GMT+8",
+		        "default": "", 
+		        "conditions": [
+		            "gte,lte"
+		        ]
+		    }, 
+		    {
+		        "name": "toDate", 
+		        "field": "mi_todate", 
+		        "title": "结束日期", 
+		        "type": "Date", 
+		        "format": "Date", 
+		        "nullable": true, 
+		        "index": false, 
+		        "timezone":"GMT+8",
+		        "default": "", 
+		        "conditions": [
+		            "gte,lte"
+		        ]
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/identity"
+	}
+}

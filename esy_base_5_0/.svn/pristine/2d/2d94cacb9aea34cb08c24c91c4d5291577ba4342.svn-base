@@ -1,0 +1,39 @@
+package ${config.package}.service.impl;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+import ${config.package}.dao.I${config.name}Dao;
+import ${config.package}.entity.${config.name};
+
+import org.yessoft.base.core.QueryResult;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import ${config.package}.service.I${config.name}Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * 
+ * Service implement for ${config.entity.title}
+ *
+ */
+@Repository
+public class ${config.name}ServiceImpl implements I${config.name}Service {
+
+	@Autowired
+	I${config.name}Dao ${config.name?uncap_first}Dao;
+
+	<#list config.service.methods as method>
+	<#if method.transactional>@Transactional</#if>
+	@Override
+	public ${method.returnType} ${method.name}(<#list method.parameters as parameter><#if parameter_index != 0>, </#if>${parameter.type} ${parameter.name}</#list>) { 
+		<#include "${method.codeTemplate}">
+	}
+	
+	</#list>
+	
+	<#include "service.impl.base.ftl" > 
+
+}

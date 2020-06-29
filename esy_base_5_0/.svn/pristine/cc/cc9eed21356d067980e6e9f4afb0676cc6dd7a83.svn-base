@@ -1,0 +1,21 @@
+	@Transactional
+	@Override
+	public ${config.name} save(${config.name} o) {
+		return ${config.name?uncap_first}Dao.save(o);
+	}
+
+	@Override
+	public ${config.name} getByUid(String uid) {
+		return ${config.name?uncap_first}Dao.getByUid(uid);
+	}
+
+	@Transactional
+	@Override
+	public boolean delete(${config.name} o) {
+		return ${config.name?uncap_first}Dao.delete(o);
+	}
+
+	@Override
+	public QueryResult query(Map<String, Object> parm) {
+		return ${config.name?uncap_first}Dao.query(parm);
+	}

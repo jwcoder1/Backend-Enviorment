@@ -1,0 +1,28 @@
+package ${config.package}.service;
+
+import org.yessoft.base.core.IBaseService;
+import ${config.package}.entity.${config.name};
+
+/**
+ * 
+ * Dao for ${config.entity.title}
+ *
+ */
+public interface I${config.name}Service extends IBaseService<${config.name}> {
+
+	<#list config.service.methods as method>
+	/**
+	 *
+	 * ${method.text}
+	 *
+	 <#list method.parameters as parameter>
+	 * @param ${parameter.name}
+	 *			${parameter.text}
+	 * 
+	 </#list>
+	 * @return ${method.returnText}
+	 */
+	public ${method.returnType} ${method.name}(<#list method.parameters as parameter><#if parameter_index != 0>, </#if>${parameter.type} ${parameter.name}</#list>);
+	
+	</#list>
+}

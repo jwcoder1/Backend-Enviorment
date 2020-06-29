@@ -1,0 +1,9 @@
+		String hql = "delete ${config.name} where uid='" + o.getUid() + "'";
+		Query q = em.createQuery(hql);
+		int updateCount = q.executeUpdate();
+		if (updateCount > 0) {
+			return true;
+		} else {
+			return false;
+		}
+		

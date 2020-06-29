@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - DispatcherServlet application context for PetClinic's web tier. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:*config.properties" />
+
+	<import resource="yes-view-cfg.xml" />
+
+	<!--自动扫描包名 -->
+	<context:component-scan base-package="org.esy.*.handler" />
+	<context:component-scan base-package="org.esy.*.controller" />
+	<context:component-scan base-package="org.esy.*.*.controller" />
+
+	<!--默认的注解映射支持 -->
+	<mvc:annotation-driven validator="validator"
+		conversion-service="conversion-service">
+		<mvc:argument-resolvers>
+			<bean
+				class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
+		<mvc:message-converters>
+			<!-- Use the HibernateAware mapper instead of the default -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="org.esy.base.core.HibernateAwareObjectMapper" />
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- Spring validator -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<!--不设置则默认为classpath下的 ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="validatemessageSource" />
+	</bean>
+	<bean id="conversion-service"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+	<bean id="validatemessageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:validate-ajitai</value>
+			</list>
+		</property>
+		<property name="fileEncodings" value="utf-8" />
+		<property name="cacheSeconds" value="120" />
+	</bean>
+
+	<!-- <mvc:annotation-driven conversion-service="conversionService"/> -->
+	<!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies 
+		(Bootstrap, jQuery...) -->
+	<!-- <mvc:resources mapping="/resources/**" location="WEB-INF/resources/" 
+		/> -->
+
+	<mvc:resources mapping="/attachments/**" location="attachments/" />
+	<mvc:resources mapping="/ueditor/**" location="ueditor/" />
+	<mvc:resources mapping="/**" location="WEB-INF/resources/" />
+	<mvc:view-controller path="/" view-name="redirect:/index.html" />
+
+	<!-- <mvc:view-controller path="/" view-name="redirect:/resources/index.html" 
+		/> -->
+
+	<!-- <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> 
+		<property name="formatters"> <set> <bean class="org.springframework.samples.petclinic.web.PetTypeFormatter"/> 
+		</set> </property> </bean> -->
+	<!-- - Message source for this context, loaded from localized "messages_xx" 
+		files. - Files are stored inside src/main/resources <bean id="messageSource" 
+		class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages/messages" 
+		/> -->
+
+	<!-- 国际化请求拦截器处理 -->
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+	<!-- 配置基于Session的处理,将提交上来的locale参数进行处理 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="zh_CN" />
+	</bean>
+	<bean id="messageSource" class="org.esy.base.core.GapResourceBundleMessageSource"
+		p:basename="org.esy.lang" />
+
+	<!--上传控件 maxUploadSize 限制上传大小以字节为单位 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:defaultEncoding="utf-8" p:maxUploadSize="200000000" />
+	<!-- - This bean resolves specific types of exceptions to corresponding 
+		logical - view names for error views. -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- view name resolved using bean of type InternalResourceViewResolver 
+			(declared in mvc-view-config.xml) -->
+		<property name="defaultErrorView" value="base/error-500" />
+		<!-- results into 'WEB-INF/jsp/exception.jsp' -->
+		<property name="warnLogCategory" value="msg" />
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.AuthorizationException">/resources/index.html#/login</prop>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">/resources/index.html#/login</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

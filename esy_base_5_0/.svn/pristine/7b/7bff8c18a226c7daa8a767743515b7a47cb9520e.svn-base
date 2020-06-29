@@ -1,0 +1,2 @@
+		return this.em.find(${config.name}.class, uid);
+		

@@ -1,0 +1,82 @@
+
+		QueryResult qr = new QueryResult();
+
+		Map<String, Condition> conditions = QueryUtils.getQueryData(parm);
+
+		try {
+			int count = YESUtil.objtoint(parm.get("count"));
+			int start = YESUtil.objtoint(parm.get("start"));
+			String order = YESUtil.toString(parm.get("order"));
+
+			String hql = "from ${config.name} a where 1=1";
+
+			String whereStr = "";
+
+			<#list config.entity.properties as property>
+			<#if property.conditions?has_content>
+			
+			Condition ${property.name} = conditions.get("${property.name}"); //${property.title}
+			if (${property.name} != null) {
+				<#list property.conditions as condition>
+				if (${property.name}.getConditions().get("${condition}") != null) {
+					<#if condition="eq" || condition="gt" || condition="lt" || condition="gte" || condition="lte">
+						<#if (property.type="String" || property.type="Date")>
+							whereStr += " and a.${property.name} <#if condition="eq">=</#if><#if condition="gt">${"\g"}</#if><#if condition="lt">${"\l"}</#if><#if condition="gte">${"\g"}=</#if><#if condition="lte">${"\l"}=</#if> '" + StringEscapeUtils.escapeSql(${property.name}.getConditions().get("${condition}")) + "'";
+						<#else>
+							whereStr += " and a.${property.name} <#if condition="eq">=</#if><#if condition="gt">${"\g"}</#if><#if condition="lt">${"\l"}</#if><#if condition="gte">${"\g"}=</#if><#if condition="lte">${"\l"}=</#if> " + StringEscapeUtils.escapeSql(${property.name}.getConditions().get("${condition}"));
+						</#if>
+					</#if>
+					<#if condition="match">
+						<#if (property.type="String")>
+							whereStr += " and a.${property.name} like '%" + StringEscapeUtils.escapeSql(${property.name}.getConditions().get("${condition}")) + "%'";
+						</#if>
+					</#if>			
+				}
+				</#list>
+			}
+			</#if>
+			</#list>
+
+			if (!"".equals(whereStr)) {
+				hql += whereStr;
+			}
+
+			String orderStr = "";
+			<#if config.entity.defaultOrders?has_content>
+				orderStr = " order by <#list config.entity.defaultOrders as order><#if order_index != 0>, </#if>a.${order.field} ${order.sort}</#list>";
+			</#if>
+			
+			<#if config.entity.otherOrders?has_content>
+				<#list config.entity.otherOrders as otherOrder>	
+					if (order.equals("${otherOrder.name}")) {
+						orderStr = " order by <#list otherOrder.orders as order><#if order_index != 0>, </#if>a.${order.field} ${order.sort}</#list>";
+					}
+					
+				</#list>
+			</#if>
+			
+			if (!"".equals(orderStr)) {
+				hql += orderStr;
+			}
+
+			Query q = em.createQuery("select count(uid) " + hql);
+			Long records = (Long) q.getSingleResult();
+			qr.setCount(records);
+
+			q = em.createQuery(hql);
+			if (start > 0) {
+				q.setFirstResult(start);
+			}
+			if (count > 0) {
+				q.setMaxResults(count);
+			} else {
+				q.setMaxResults(10);
+			}
+			qr.setItems(q.getResultList());
+			qr.setHeaders(QueryUtils.getClassFieldInfo(${config.name}.class));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return qr;

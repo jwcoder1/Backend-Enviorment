@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+
+	<!-- 用户授权信息Cache, 采用EhCache -->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile"
+			value="classpath:org/esy/base/xmlconfig/ehcache-shiro.xml" />
+	</bean>
+
+	<bean id="shiroRealm" class="org.esy.base.security.service.ShiroRealm" />
+
+	<!-- Shiro's main business-tier object for web-enabled applications -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+	</bean>
+
+	<bean id="filterChainSource" class="org.esy.base.security.core.FilterChainSource">
+		<property name="filterChainDefinitions">
+			<value>
+				<!-- anon表示此地址不需要任何权限即可访问 -->
+				<!-- perms[user:query]表示访问此连接需要权限为user:query的用户 -->
+				<!-- roles[manager]表示访问此连接需要用户的角色为manager -->
+				<!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login -->
+				<!-- authc 标识必须登入才可以访问，user 标识 RememberMe 或登入都可以访问 -->
+				<!-- public公共访问目录 -->
+				/login = authc
+                /api/workflow/** = role[workflow]
+                /services/** = anon
+                /weixin/** = anon
+				/api/** = anon
+				/uim/** = anon
+				/socialnet/** = anon
+				/public/** = anon
+				/logout = logout 
+				/xiayanzc/** = anon
+				/resources/** = anon
+				/attachments/** = anon
+				/ueditor/** = anon
+				/error/** = anon
+				/base_logs/** = perms[base_dba]
+				/**	= anon
+				/api/base/attachment/download = anon
+			</value>
+		</property>
+	</bean>
+
+	<!-- Shiro Filter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/home" />
+		<!-- 如果您请求的资源不在您的权限范围，则跳转到/403请求地址 -->
+		<property name="unauthorizedUrl" value="/login" />
+		<property name="filters">
+			<map>
+                <entry key="role" value-ref="roleAuthorizationFilter" />
+				<!-- <entry key="authc" value-ref="captchaFormAuthenticationFilter" /> -->
+			</map>
+		</property>
+		<property name="filterChainDefinitionMap" ref="filterChainSource" />
+	</bean>
+
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod"
+			value="org.apache.shiro.SecurityUtils.setSercurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+	<!-- <bean id="captchaFormAuthenticationFilter"
+		class="org.esy.base.security.core.BaseFormAuthenticationFilter" /> -->
+    <bean id="roleAuthorizationFilter"
+        class="org.esy.base.security.core.RoleAuthorizationFilter" />
+    
+</beans>

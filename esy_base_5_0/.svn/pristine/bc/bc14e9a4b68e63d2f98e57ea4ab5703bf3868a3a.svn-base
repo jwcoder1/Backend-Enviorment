@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>Excel to JSON</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Site CSS -->
+    <script src="resources/jquery.min.js"></script>
+
+</head>
+
+<script type="text/javascript">
+
+    var convert2Array = function (raw) {
+        var rows = raw.split('\n');
+        var arr = [];
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i] != "") {
+                arr.push(rows[i].split('\t'));
+            }
+        }
+        return arr;
+    };
+
+    $(document).ready(function () {
+        $('#clear').on('click', function () {
+            $("#csv").val('');
+            $("#json").val('');
+        });
+
+
+        $('#convert').on('click', function () {
+
+            var $config = $('#config').val();
+            if (!$config) {
+                alert("配置不能为空");
+                return;
+            } else {
+                console.log($config);
+            }
+
+            var configObj = JSON.parse($config);
+            var $csv = $('#csv').val();
+            var csvArray = convert2Array($csv);
+
+            var jsonArray = [];
+            for (var i = 1; i < csvArray.length; i++) {
+                var obj = {};
+                for (var j = 0; j < csvArray[0].length; j++) {
+                    var fieldName = csvArray[0][j];
+                    var cfg = configObj[fieldName];
+
+                    if (csvArray[i][j] == "") {
+                        if (!cfg) {
+                            obj[fieldName] = csvArray[i][j];
+                        } else if (cfg['default']) {
+                            csvArray[i][j] = cfg['default'];
+                        } else {
+                            continue;
+                        }
+                    }
+
+                    if (!cfg) {
+                        obj[fieldName] = csvArray[i][j];
+                    } else if (cfg.array) {
+                        var subJson = csvArray[i][j].split(cfg.delimiter);
+                        for (var k = 0; k < subJson.length; k++) {
+                            if (cfg.type == "number") {
+                                subJson[k] = $.parseJSON(subJson[k]);
+                            } else if (cfg.type == "boolean") {
+                                subJson[k] = /true/ig.test(subJson[k]);
+                            } else if (cfg.type == "general") {
+                                if (/true/ig.test(csvArray[i][j]) || /false/ig.test(csvArray[i][j])){
+                                    obj[fieldName] = /true/ig.test(csvArray[i][j]);
+                                } else {
+                                    try {
+                                        obj[fieldName] = $.parseJSON(csvArray[i][j]);
+                                    } catch (ex) {
+                                        obj[fieldName] = csvArray[i][j];
+                                    }
+                                }
+                            }
+                        }
+                        obj[fieldName] = subJson;
+                    }
+                    else {
+                        if (cfg.type == "number") {
+                            obj[fieldName] = $.parseJSON(csvArray[i][j]);
+                        } else if (cfg.type == "boolean") {
+                            obj[fieldName] = /true/ig.test(csvArray[i][j]);
+                        } else if (cfg.type == "general") {
+                            if ( /true/ig.test(csvArray[i][j]) || /false/ig.test(csvArray[i][j])){
+                                obj[fieldName] = /true/ig.test(csvArray[i][j]);
+                            } else {
+                                try {
+                                    obj[fieldName] = $.parseJSON(csvArray[i][j]);
+                                } catch (ex) {
+                                    obj[fieldName] = csvArray[i][j];
+                                }
+                            }
+                        } else {
+                            obj[fieldName] = csvArray[i][j];
+                        }
+                    }
+                }
+                jsonArray.push(obj);
+                console.log(jsonArray);
+            }
+            $('#json').val(JSON.stringify(jsonArray));
+        });
+    });
+
+</script>
+
+<body>
+<div style="margin: 20px; ">
+
+    <button id="clear"> reset</button>
+    <button id="convert"> convert</button>
+    <form id="form1">
+        <label style="width: 100%">
+            config
+            <textarea id="config" style="width: 100%;height: 200px;"></textarea>
+        </label>
+
+
+        <label style="width: 100%">
+            csv
+            <textarea id="csv" style="width: 100%;height: 200px;"></textarea>
+        </label>
+
+        <label style="width: 100%">
+            Json
+            <textarea id="json" style="width: 100%;height: 200px;"></textarea>
+        </label>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"Appform",
+	"package":"org.yessoft.workflow",
+	"entity":{
+		"table":"workflow_form",
+		"title":"自动代码生成范例",
+		"defaultOrders":[
+			{
+				"field":"formid",
+				"sort":"asc"
+			},{
+				"field":"formname",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[],
+		"properties":[
+    {
+        name: "formid", 
+        field: "form_id", 
+        title: "表单编号", 
+        type: "String", 
+        format: "String", 
+        length: 30, 
+        nullable: false, 
+        index: true, 
+        default: "", 
+        conditions: [
+            "match"
+        ]
+    }, 
+    {
+        name: "formname", 
+        field: "form_name", 
+        title: "表单名称", 
+        type: "String", 
+        format: "String", 
+        length: 100, 
+        nullable: false, 
+        index: false, 
+        default: "", 
+        conditions: [
+            "match"
+        ]
+    }
+]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/workflow/form"
+	}
+}

@@ -1,0 +1,124 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"Post",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_mpost",
+		"title":"岗位信息",
+		"defaultOrders":[
+			{
+				"field":"updated",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"oid",
+				"orders":[
+					{
+						"field":"oid",
+						"sort":"asc"
+					}
+				]	
+			},{
+				"name":"pid",
+				"orders":[
+					{
+						"field":"pid",
+						"sort":"asc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "oid", 
+		        "field": "mpt_oid", 
+		        "title": "组织编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "eid", 
+		        "field": "mpt_eid", 
+		        "title": "企业路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "pid", 
+		        "field": "mpt_pid", 
+		        "title": "编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "name", 
+		        "field": "mpt_name", 
+		        "title": "名称", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 64, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "seq", 
+		        "field": "mpt_seq", 
+		        "title": "排序", 
+		        "type": "Integer", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": 99
+		    }, 
+		    {
+		        "name": "enable", 
+		        "field": "mpt_enable", 
+		        "title": "状态", 
+		        "type": "Boolean", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": true, 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/post"
+	}
+}

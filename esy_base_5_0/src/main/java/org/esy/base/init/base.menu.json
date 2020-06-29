@@ -1,0 +1,213 @@
+{
+    "execute": [{
+            "summary": "删除BASE菜单",
+            "hql": "delete Menu m where m.mid = 'base'"
+        },
+        {
+            "summary": "删除BASE下的子菜单",
+            "hql": "delete Menu m where m.mid like 'base_%'"
+        }
+
+    ],
+    "import": [{
+            "summary": "系统管理",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base",
+                "pid": "",
+                "mid": "base",
+                "order": 2000,
+                "name": "系统管理",
+                "tag": "base",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-desktop",
+                "tip": "系统管理",
+                "url": "#",
+                "memo": "系统管理",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-pink"
+            }
+        },
+        {
+            "summary": "账号管理",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_account",
+                "pid": "base",
+                "mid": "base_account",
+                "order": 100,
+                "name": "账号管理",
+                "tag": "base_account",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-user",
+                "tip": "账号管理",
+                "url": "#/base/account",
+                "memo": "账号管理",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-primary"
+            }
+        },
+        {
+            "summary": "角色信息",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_role",
+                "pid": "base",
+                "mid": "base_role",
+                "order": 300,
+                "name": "角色信息",
+                "tag": "base_role",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-wrench",
+                "tip": "角色信息",
+                "url": "#/base/role",
+                "memo": "角色信息",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-pink"
+            }
+        },
+        {
+            "summary": "角色账号",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_rolemember",
+                "pid": "base",
+                "mid": "base_rolemember",
+                "order": 400,
+                "name": "角色账号",
+                "tag": "base_rolemember",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-wrench",
+                "tip": "角色账号",
+                "url": "#/base/rolemember",
+                "memo": "角色账号",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-pink"
+            }
+        },
+        {
+            "summary": "角色菜单",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_rolemenu",
+                "pid": "base",
+                "mid": "base_rolemenu",
+                "order": 500,
+                "name": "角色菜单",
+                "tag": "base_rolemenu",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-wrench",
+                "tip": "角色菜单",
+                "url": "#/base/rolemenu",
+                "memo": "角色菜单",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-pink"
+            }
+        },
+        {
+            "summary": "企业管理",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_enterprise",
+                "pid": "base",
+                "mid": "base_enterprise",
+                "order": 650,
+                "name": "企业管理",
+                "tag": "base_enterprise",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-gavel",
+                "tip": "企业管理",
+                "url": "#/base/enterprise",
+                "memo": "企业管理",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-pink"
+            }
+
+        },
+        {
+            "summary": "菜单配置",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_config_menu",
+                "pid": "base",
+                "mid": "base_config_menu",
+                "order": 600,
+                "name": "菜单配置",
+                "tag": "base_config_menu",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-cogs",
+                "tip": "菜单配置",
+                "url": "#base/menu",
+                "memo": "菜单配置",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-warning"
+            }
+
+        },
+        {
+            "summary": "系统日志",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_log",
+                "pid": "base",
+                "mid": "base_log",
+                "order": 700,
+                "name": "系统日志",
+                "tag": "base_log",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-list",
+                "tip": "系统日志",
+                "url": "#/base/log",
+                "memo": "系统日志",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-warning"
+            }
+        },
+        {
+            "summary": "数据字典",
+            "classname": "org.esy.base.entity.Menu",
+            "entity": {
+                "uid": "base_dictionary",
+                "pid": "base",
+                "mid": "base_dictionary",
+                "order": 9103,
+                "name": "数据字典",
+                "tag": "base_dictionary",
+                "enable": true,
+                "type": "menu",
+                "icon": "fa-book",
+                "tip": "数据字典",
+                "url": "#/base/dictionary",
+                "memo": "数据字典",
+                "home": true,
+                "blank": false,
+                "expanded": false,
+                "color": "btn-warning"
+            }
+        }
+    ]
+}

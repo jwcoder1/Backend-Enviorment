@@ -1,0 +1,9 @@
+		if (o.checkNew()) {
+			o.setUid(UuidUtils.getUUID());
+			this.em.persist(o);
+		} else {
+			o.updateEntity();
+			o = this.em.merge(o);
+		}
+		return o;
+		

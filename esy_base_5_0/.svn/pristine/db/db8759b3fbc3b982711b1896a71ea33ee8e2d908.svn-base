@@ -1,0 +1,20 @@
+	@Override
+	public ${config.name} save(${config.name} o) {
+		<#include "dao.impl.base.save.ftl" > 
+	}
+
+	@Override
+	public ${config.name} getByUid(String uid) {
+		<#include "dao.impl.base.getByUid.ftl" > 
+	}
+
+	@Override
+	public boolean delete(${config.name} o) {
+		<#include "dao.impl.base.delete.ftl" > 
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public QueryResult query(Map<String, Object> parm) {
+		<#include "dao.impl.base.query.ftl" > 
+	}

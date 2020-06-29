@@ -1,0 +1,109 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"Group",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_mgroup",
+		"title":"群组信息",
+		"defaultOrders":[
+			{
+				"field":"updated",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"gid",
+				"orders":[
+					{
+						"field":"gid",
+						"sort":"asc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "eid", 
+		        "field": "mg_eid", 
+		        "title": "企业路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "gid", 
+		        "field": "mg_gid", 
+		        "title": "编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "name", 
+		        "field": "mg_name", 
+		        "title": "名称", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 64, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "type", 
+		        "field": "mg_type", 
+		        "title": "类型", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 1, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "describe", 
+		        "field": "mg_describe", 
+		        "title": "描述", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 128, 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/group"
+	}
+}

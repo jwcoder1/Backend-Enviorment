@@ -1,0 +1,159 @@
+{
+	"templates":["entity","dao","dao.impl","service","service.impl","controller"],
+	"name":"Organization",
+	"package":"org.yessoft.base",
+	"entity":{
+		"table":"base_morganization",
+		"title":"组织信息",
+		"defaultOrders":[
+			{
+				"field":"updated",
+				"sort":"desc"
+			}
+		],
+		"otherOrders":[
+			{
+				"name":"path",
+				"orders":[
+					{
+						"field":"path",
+						"sort":"asc"
+					}
+				]	
+			}
+		],
+		"properties":[
+		    {
+		        "name": "oid", 
+		        "field": "mo_oid", 
+		        "title": "编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "name", 
+		        "field": "mo_name", 
+		        "title": "名称", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 64, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "eid", 
+		        "field": "mo_eid", 
+		        "title": "企业路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "pid", 
+		        "field": "mo_pid", 
+		        "title": "上级编号", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 32, 
+		        "nullable": true, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "path", 
+		        "field": "mo_path", 
+		        "title": "组织路径", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 255, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }, 
+		    {
+		        "name": "type", 
+		        "field": "mo_type", 
+		        "title": "类别", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 1, 
+		        "nullable": false, 
+		        "index": true, 
+		        "default": 1, 
+		        "conditions": [
+		            "eq"
+		        ], 
+		        "memo": "1.正式；2.虚拟"
+		    }, 
+		    {
+		        "name": "seq", 
+		        "field": "mo_seq", 
+		        "title": "排序", 
+		        "type": "Integer", 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": 99
+		    }, 
+		    {
+		        "name": "enable", 
+		        "field": "mo_enable", 
+		        "title": "状态", 
+		        "type": "Boolean", 
+		        "nullable": false, 
+		        "index": false, 
+		        "default": true, 
+		        "conditions": [
+		            "eq"
+		        ]
+		    }, 
+		    {
+		        "name": "mail", 
+		        "field": "mo_mail", 
+		        "title": "邮箱", 
+		        "type": "String", 
+		        "format": "String", 
+		        "length": 128, 
+		        "nullable": true, 
+		        "index": false, 
+		        "default": "", 
+		        "conditions": [
+		            "match"
+		        ]
+		    }
+		]
+	},
+	"dao":{
+		"methods":[
+		]
+	},
+	"service":{
+		"methods":[
+		]
+	},	
+	"controller":{
+		"requestMapping":"/api/base/organization"
+	}
+}
