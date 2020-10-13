@@ -35,7 +35,7 @@
         <!-- <version.spring>4.1.7.RELEASE</version.spring> -->
         <version.spring>4.2.5.RELEASE</version.spring>
         <version.spring.security>4.0.4.RELEASE</version.spring.security>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.druid>1.0.26</version.druid>
         <version.shiro>1.2.4</version.shiro>
         <version.aspectj>1.8.6</version.aspectj>
