@@ -47,7 +47,7 @@
         <version.httpclient>4.5</version.httpclient>
         <version.fasterxml-jackson>2.9.5</version.fasterxml-jackson>
         <version.net.sf.json-lib>2.4</version.net.sf.json-lib>
-        <version.poi>3.12</version.poi>
+        <version.poi>4.1.2</version.poi>
         <version.jcifs>1.3.17</version.jcifs>
         <version.guava>18.0</version.guava>
         <version.ant>1.9.6</version.ant>
